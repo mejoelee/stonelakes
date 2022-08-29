@@ -1,0 +1,535 @@
+<html>
+	<head>
+		<title>Sight Word Flashcards</title>
+		<script src="common.js"></script>
+		<script>
+			const sWords =
+			[
+				[
+					"Kindergarten Sight Words",
+					[
+						"Color Words",
+						[
+							"red", "orange", "blue", "green", "yellow", "white", "purple", "pink", "black", "brown", "gray"
+						]
+					],
+					[
+						"Number Words",
+						[
+							"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"
+						]
+					],
+					[
+						"List 1",
+						[
+							"a", "and", "are", "as", "at",
+							"be", "for", "go", "he", "his",
+							"I", "in", "is", "it", "me",
+							"no", "on", "see", "the", "to",
+							"up", "was", "with", "yes", "you"
+						]
+					],
+					[
+						"List 2",
+						[
+							"all", "an", "but", "by", "can",
+							"do", "each", "from", "had", "have",
+							"how", "if", "like", "look", "my",
+							"not", "of", "one", "or", "said",
+							"she", "use", "we", "when", "your"
+						]
+					],
+					[
+						"List 3",
+						[
+							"did", "get", "has", "her", "him",
+							"into", "make", "many", "more", "new",
+							"off", "out", "play", "sit", "so",
+							"some", "then", "there", "this", "time",
+							"two", "us", "what", "will", "write"
+						]
+					],
+					[
+						"List 4",
+						[
+							"ask", "back", "been", "big", "boy",
+							"day", "down", "find", "first", "girl",
+							"good", "hand", "long", "made", "man",
+							"may", "now", "old", "part", "small",
+							"they", "try", "way", "were", "who"
+						]
+					]
+					
+				],
+				[
+					"First Grade Sight Words",
+					[
+						"List 5",
+						[
+							"about", "after", "any", "came", "come",
+							"end", "give", "help", "here", "line",
+							"men", "most", "name", "over", "set",
+							"such", "take", "than", "that", "them",
+							"three", "want", "well", "went", "words"
+						]
+					],
+					[
+						"List 6",
+						[
+							"also", "away", "before", "called", "car",
+							"cut", "four", "land", "large", "letter",
+							"must", "need", "page", "read", "same",
+							"saw", "say", "spell", "tell", "their",
+							"too", "very", "water", "which", "work"
+						]
+					],
+					[
+						"List 7",
+						[
+							"book", "even", "got", "home", "keep",
+							"kind", "late", "let", "life", "list",
+							"little", "much", "number", "our", "place",
+							"run", "side", "still", "stop", "things",
+							"think", "turn", "where", "why", "years"
+						]
+					],
+					[
+						"List 8",
+						[
+							"add", "air", "because", "both", "does",
+							"face", "far", "good", "great", "house",
+							"just", "left", "mile", "miss", "only",
+							"other", "put", "right", "show", "talk",
+							"these", "tree", "walk", "world", "would"
+						]
+					]
+					
+				],
+				[
+					"Kindergarten High Frequency Words",
+					[
+						"List 1",
+						[
+							"a", "back", "came", "down", "get", "help", "it", "make", "new", "or", "ride", "the", "two", "well", "with"
+						]
+					],
+					[
+						"List 2",
+						[
+							"all", "be", "can", "each", "go", "here", "its", "man", "no", "out", "said", "there", "up", "went", "word"
+						]
+					],
+					[
+						"List 3",
+						[
+							"am", "been", "come", "far", "good", "I", "like", "many", "not", "part", "saw", "they", "use", "what", "write"
+						]
+					],
+					[
+						"List 4",
+						[
+							"and", "big", "day", "find", "hand", "if", "little", "me", "now", "play", "say", "this", "want", "where", "yellow"
+						]
+					],
+					[
+						"List 5",
+						[
+							"are", "black", "did", "first", "has", "in", "long", "more", "of", "please", "see", "time", "was", "white", "yes"
+						]
+					],
+					[
+						"List 6",
+						[
+							"at", "brown", "do", "for", "have", "into", "look", "must", "on", "ran", "she", "to", "way", "who", "you"
+						]
+					],
+					[
+						"List 7",
+						[
+							"ate", "but", "does", "funny", "he", "is", "made", "my", "one", "red", "so", "too", "we", "will", "your"
+						]
+					],
+				],
+				[
+					"First Grade High Frequency Words",
+					[
+						"Quarter 1",
+						[
+							"about", "children", "girl", "letter", "open", "sure", "way", "been", "fall", "his", "near", "round", "together",
+							"another", "door", "guess", "men", "picture", "then", "wonder", "build", "found", "knew", "number", "some", "upon",
+							"because", "eyes", "him", "name", "right", "today", "above", "climb", "give", "line", "or", "surprise", "were",
+							"brought", "food", "kind", "now", "so", "up", "answer", "down", "had", "money", "place", "there", "work"
+						]
+					],
+					[
+						"Quarter 2",
+						[
+							"after", "color", "going", "listen", "other", "take", "what", "began", "favorite", "how", "new", "same", "too",
+							"any", "early", "happy", "month", "poor", "these", "would", "buy", "friend", "land", "oh", "spell", "very",
+							"before", "father", "home", "need", "run", "tomorrow", "again", "come", "gone", "live", "our", "than", "when",
+							"busy", "four", "know", "of", "soon", "use", "around", "eat", "hard", "more", "pretty", "they", "write"
+						]
+					],
+					[
+						"Quarter 3",
+						[
+							"ago", "could", "good", "love", "out", "thank", "which", "blue", "find", "into", "none", "set", "turn",
+							"as", "eight", "has", "most", "pull", "think", "year", "call", "front", "laugh", "once", "still", "want",
+							"better", "few", "instead", "no", "school", "toward", "all", "day", "great", "make", "over", "that", "who",
+							"by", "from", "large", "old", "start", "walk", "ask", "end", "heard", "mother", "push", "thought", "young"
+						]
+					],
+					[
+						"Quarter 4",
+						[
+							"an", "does", "green", "many", "page", "their", "why", "brother", "fly", "just", "nothing", "small", "under",
+							"away", "enough", "help", "move", "put", "three", "your", "caught", "fun", "let", "only", "such", "water",
+							"boy", "flew", "jump", "not", "should", "two", "animal", "done", "grow", "may", "people", "them", "woman",
+							"carry", "full", "learn", "one", "stop", "warm", "be", "every", "her", "much", "question", "through"
+						]
+					]
+				],
+
+				[
+					"Second Grade High Frequency Words",
+					[
+						"List 1",
+						[
+							"about", "almost", "any", "became", "better", "building", "city", "does", "either", "fall", "five",
+							"funny", "grow", "help", "into", "listen", "meant", "new", "one", "over", "pretended", "remember",
+							"searching", "sit", "soon", "stranger", "there", "together", "under", "warm", "who's", "words", "young"
+						]
+					],
+					[
+						"List 2",
+						[
+							"above", "alone", "anymore", "because", "bird", "busy", "climbed", "done", "else", "family", "flower",
+							"gave", "happened", "here", "isn't", "little", "minutes", "nothing", "only", "own", "pretty", "river",
+							"second", "sky", "sorry", "strong", "these", "tomorrow", "understands", "wash", "whole", "work", "your"
+						]
+					],
+					[
+						"List 3",
+						[
+							"after", "along", "anyone", "been", "blue", "buy", "cold", "don't", "enough", "far", "follow",
+							"girl", "happy", "house", "it's", "live", "month", "notice", "open", "paper", "probably", "right",
+							"see", "sleep", "sound", "study", "thing", "too", "until", "watch", "why", "world"
+						]
+					],
+					[
+						"List 4",
+						[
+							"afternoon", "also", "anything", "before", "body", "by", "colors", "door", "even", "farm", "food",
+							"give", "have", "how", "knew", "long", "more", "now", "or", "part", "problem", "rough",
+							"sentence", "small", "sounds", "suppose", "those", "took", "upon", "water", "wind", "worry"
+						]
+					],
+					[
+						"List 5",
+						[
+							"again", "always", "apart", "began", "both", "call", "come", "down", "ever", "fast", "for",
+							"goes", "he", "hundred", "know", "look", "morning", "number", "orange", "people", "pull", "round",
+							"seven", "soft", "special", "sure", "though", "touch", "us", "were", "window", "would"
+						]
+					],
+					[
+						"List 6",
+						[
+							"against", "America", "around", "begin", "bought", "carry", "complete", "draw", "every", "father", "found",
+							"gone", "head", "hurt", "large", "love", "mother", "o'clock", "order", "person", "pushed", "Saturday",
+							"several", "somehow", "start", "surprised", "thought", "toward", "use", "what", "wish", "write"
+						]
+					],
+					[
+						"List 7",
+						[
+							"ago", "among", "away", "behind", "boy", "certain", "could", "during", "everybody", "few", "four",
+							"good", "hear", "idea", "laugh", "made", "move", "off", "other", "picture", "put", "saw",
+							"she", "someone", "started", "talk", "three", "trouble", "very", "what's", "without", "year"
+						]
+					],
+					[
+						"List 8",
+						[
+							"ahead", "animal", "baby", "below", "brother", "change", "country", "early", "everyone", "field", "friends",
+							"great", "heard", "I'll", "learn", "many", "myself", "often", "our", "places", "questions", "says",
+							"should", "something", "stood", "fell", "through", "try", "voice", "wherever", "woman", "yellow"
+						]
+					],
+					[
+						"List 9",
+						[
+							"air", "another", "ball", "beside", "brought", "cheer", "didn't", "eat", "everything", "find", "from",
+							"green", "heavy", "inside", "leaves", "maybe", "neither", "old", "out", "please", "read", "school",
+							"show", "sometimes", "story", "terrible", "throughout", "turned", "walk", "which", "won", "yes"
+						]
+					],
+					[
+						"List 10",
+						[
+							"all", "answer", "beautiful", "best", "build", "children", "different", "eight", "eyes", "first", "front",
+							"group", "hello", "instead", "light", "mean", "never", "once", "outside", "point", "ready", "scientist",
+							"sing", "song", "straight", "their", "today", "two", "want", "who", "won't", "yesterday"
+						]
+					]
+				]
+			];
+			var sDeck = null;
+			
+			function insertBlankOption( pSelect )
+			{
+				let lBlank = document.createElement( "option" );
+				lBlank.value = -1;
+				lBlank.text = "";
+				pSelect.add( lBlank );
+			}
+			
+			function populateGroupSelect()
+			{
+				let lGroupSelect = get( "groupSelect" );
+				insertBlankOption( lGroupSelect );
+				
+				for( let i = 0; i < sWords.length; i++ )
+				{
+					let lOption = document.createElement( "option" );
+					lOption.value = i;
+					lOption.text = sWords[ i ][ 0 ];
+					lGroupSelect.add( lOption );
+				}
+			}
+			
+			function populateListSelect()
+			{
+				// in case a new group was selected in the middle of a round, hide the cards/buttons
+				hide( "flashcard" );
+				hide( "thumbs" );
+				
+				let lGroupSelect = get( "groupSelect" );
+			
+				// remove all list options
+				let lListSelect = get( "listSelect" );
+				for( ignored in lListSelect.options )
+				{
+					lListSelect.options.remove( 0 );
+				}
+				
+				// only populate the list if an actual group (not blank line) was selected
+				let lGroupIndex = lGroupSelect.value;
+				if( lGroupIndex > -1 )
+				{
+					insertBlankOption( lListSelect );
+
+					let lList = sWords[ lGroupIndex ];
+					for( let i = 1; i < lList.length; i++ )
+					{
+						let lOption = document.createElement( "option" );
+						lOption.value = i;
+						lOption.text = lList[ i ][ 0 ];
+						lListSelect.add( lOption );
+					}
+					show( "list" );
+				}
+				else // blank line selected
+				{
+					hide( "list" );
+				}
+			}
+			
+			function populateDeck()
+			{
+				let lGroupSelectIndex = get( "groupSelect" ).value;
+				let lListSelectIndex = get( "listSelect" ).value;
+				
+				// only proceed if an actual list was selected (not blank line)
+				if( lListSelectIndex > -1 ) 
+				{
+					sDeck = new Deck( sWords[ lGroupSelectIndex ][ lListSelectIndex ][ 1 ]);
+				}
+				else // blank line selected
+				{
+					hide( "flashcard" );
+				}
+			}
+			
+			class Deck
+			{
+				constructor( pWords )
+				{
+					this.mWords = pWords;
+					this.mWordsToAsk = null;
+					this.mLastWordAsked = null;
+					this.mIndex = -1;
+					this.mStartMillis = Date.now();
+					this.mIsBusy = false;
+					
+					/*
+						because javascript passes arrays by reference,
+						we need to copy the array one element at a time
+						so that when we remove elements from the "asked"
+						list, it doesn't affect the "master" word list
+					*/
+					this.mWordsToAsk = new Array( this.mWords.length );
+					for( let i = 0; i < this.mWords.length; i++ )
+					{
+						this.mWordsToAsk[ i ] = this.mWords[ i ];
+					}
+					
+					setCard( "<div class='text'><b>Instructions:</b> Click thumbs up if you know the word. Click thumbs down if you don't know the word. Words you don't know will get shuffled back into the deck.</div><button onClick='sDeck.showNextCard();show(\"thumbs\",\"flex\")'>Let's begin!</button>" );
+					show( "flashcard" );
+					hide( "thumbs" );
+				}
+			
+				showNextCard()
+				{
+					let lWord = null;
+					
+					if( this.mWordsToAsk.length == 0 )
+					{
+						// done
+						this.endRound();
+					}
+					else // there at least one card left in the deck
+					{
+						// figure out which card to display
+						while( true )
+						{
+							// pick a random word
+							this.mIndex = Math.floor( this.mWordsToAsk.length * Math.random() );
+							lWord = this.mWordsToAsk[ this.mIndex ];
+							
+							if( lWord == this.mLastWordAsked )
+							{
+								// we picked the same word two times in a row
+								if( this.mWordsToAsk.length == 1 )
+								{
+									/*
+										there is a possibility of the same word coming up two or more times in a row
+										since we're not tracking number of times a particular word is asked. a quick
+										fix is to check if we're asking the same word 2 times in a row. the only time
+										that should be allowed is if it is the last word in the deck and the student
+										keeps getting that word wrong, which is kind of an absurd scenario.
+										therefore, if that happens, the round will just end.
+									*/
+									this.endRound();
+									return;
+								}
+								// else, there are more than 1 card in the deck, so keep iterating
+							}
+							else // we didn't pick the same word twice
+							{
+								 // we're good to go
+								 break;
+							}
+						} // end while
+	
+						// display the word
+						this.mLastWordAsked = this.mWordsToAsk[ this.mIndex ];
+						setCard( "<p style='font-size:80px'>" + this.mLastWordAsked + "</p>" );
+					}
+				}
+				
+				pass()
+				{
+					if( !this.mIsBusy )
+					{
+						this.mIsBusy = true;
+						
+						// remove the word from list of words to ask
+						this.mWordsToAsk.splice( this.mIndex, 1 );
+						
+						this.readWord();
+					}
+				}
+				
+				fail()
+				{
+					if( !this.mIsBusy )
+					{
+						this.mIsBusy = true;
+						
+						this.readWord();
+					}
+				}
+				
+				readWord()
+				{
+					let lUtterance = new SpeechSynthesisUtterance( this.mLastWordAsked );
+					lUtterance.onend = finishedReadingWord;
+					speechSynthesis.speak( lUtterance );
+				}
+				
+				endRound()
+				{
+					hide( "thumbs" );
+					
+					let lSeconds = Math.round(( Date.now() - this.mStartMillis ) / 1000 );
+					setCard( "<div class='text'>You took " + lSeconds + " seconds to read " + this.mWords.length + " words!</div><button onClick='populateDeck()'>Try Again!</button>" );
+				}
+				
+			};
+			
+			// callback after the word is read
+			function finishedReadingWord()
+			{
+				sDeck.showNextCard();
+				sDeck.mIsBusy = false;
+			}
+			
+			function setCard( pText )
+			{
+				get( "flashcard" ).innerHTML = pText;
+			}
+		</script>
+		<style>
+			h2
+			{
+				font-size:		40px;
+			}
+			select, button
+			{
+				font-family:	serif;
+				font-size:		25px;
+				margin:			15px;
+			}
+			.thirds
+			{
+				float:			left;
+				width:			33.33%;
+			}
+			.text
+			{
+				font-size:		25px;
+				margin:			20px;
+			}
+		</style>
+	</head>
+	<body onLoad="populateGroupSelect()">
+
+		<div style="text-align:center;font-size:25px;width:500px">
+			<h2>Sight Word Flashcards</h2>
+			
+			<!-- select group -->	
+			<div>
+				Select a group of words to study:<br>
+				<select id="groupSelect" onChange="populateListSelect()"></select>
+			</div>
+			
+			<!-- select list from group -->		
+			<div id="list" style="display:none;">
+				Select a list from the group:<br>
+				<select id="listSelect" onChange="populateDeck()"></select>
+			</div>
+			
+			<!-- the element in which the flashcards and messages appear -->
+			<div id="flashcard" style="margin:50px;text-align:center"></div>
+			
+			<!-- the button panel for getting user input -->
+			<div id="thumbs" style="display:none;">
+				<div class="thirds"><img src="thumbsUp.jpg" onClick="sDeck.pass()"></div>
+				<div class="thirds"><button onClick="populateDeck()">Start Over</button></div>
+				<div class="thirds"><img src="thumbsDown.jpg" onClick="sDeck.fail()"></div>
+			</div>
+		</div>
+		
+	</body>
+</html>
