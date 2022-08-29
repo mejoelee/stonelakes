@@ -437,7 +437,8 @@
 						// remove the word from list of words to ask
 						this.mWordsToAsk.splice( this.mIndex, 1 );
 						
-						this.readWord();
+						// just call the callback that we use for asynchronous speech
+						finishWord();
 					}
 				}
 				
@@ -454,7 +455,7 @@
 				readWord()
 				{
 					let lUtterance = new SpeechSynthesisUtterance( this.mLastWordAsked );
-					lUtterance.onend = finishedReadingWord;
+					lUtterance.onend = finishWord;
 					speechSynthesis.speak( lUtterance );
 				}
 				
@@ -469,7 +470,7 @@
 			};
 			
 			// callback after the word is read
-			function finishedReadingWord()
+			function finishWord()
 			{
 				sDeck.showNextCard();
 				sDeck.mIsBusy = false;
