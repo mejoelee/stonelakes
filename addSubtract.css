@@ -36,3 +36,8 @@ table
 	font-size:			80px;
 	font-weight:		bold;
 }
+.wrong
+{
+	color:				#cc0000;
+	background:			none;
+}

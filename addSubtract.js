@@ -25,12 +25,26 @@ function writeTable( pStart, pEnd )
 }
 
 var sCurrentEquation = null;
+var sStart = null;
+var sRange = null;
+var sNumberOfQuestions = null;
+var sCorrectCount = null;
+var sAskedCount = null;
 
 function startQuiz( pStart, pEnd, pNumberOfQuestions )
 {	
-	let lRange = pEnd - pStart;
+	sStart = pStart;
+	sRange = pEnd - pStart;
+	sNumberOfQuestions = pNumberOfQuestions;
+	sAskedCount = 0;
+	sCorrectCount = 0;
 	
-	for( let iQuestions = 0; iQuestions < pNumberOfQuestions; iQuestions++ )
+	askNextQuestion();
+}
+
+function askNextQuestion()
+{
+	if( sAskedCount++ < sNumberOfQuestions )
 	{
 		let lFirstNumber = 0;
 		let lSecondNumber = 0;
@@ -38,14 +52,21 @@ function startQuiz( pStart, pEnd, pNumberOfQuestions )
 		// pick 2 random numbers
 		do
 		{
-			lFirstNumber = Math.floor( lRange * Math.random() ) + pStart;
-			lSecondNumber = Math.floor( lRange * Math.random() ) + pStart;
+			lFirstNumber = Math.floor( sRange * Math.random() ) + sStart;
+			lSecondNumber = Math.floor( sRange * Math.random() ) + sStart;
 		}
-		while( lFirstNumber == lSecondNumber );
+		while( lFirstNumber == lSecondNumber ); // make sure the number aren't equal
 		
-		let lIsAddition = Math.random < 0.5;
+		// determine the operator
+		let lIsAddition = Math.random() < 0.5;
+		
+		// create and show new equation
 		sCurrentEquation = new Equation( lFirstNumber, lSecondNumber, lIsAddition );
 		sCurrentEquation.show();
+	}
+	else // done, display results
+	{
+		alert(sCorrectCount);
 	}
 }
 
@@ -62,9 +83,21 @@ class Equation
 		this.mSumOrDifference = pIsAddition ? pFirstNumber + pSecondNumber : this.mFirstNumber - this.mSecondNumber;
 	}
 	
-	show( pShowAnswer )
+	show( pShowAnswer, pWasWrong )
 	{
-		showEquation( this.mFirstNumber + " " + this.mOperator + " " + this.mSecondNumber + " = " + ( pShowAnswer ? this.mSumOrDifference : "?" ));
+		let lAnswer = "?";
+		if( pShowAnswer )
+		{
+			if( pWasWrong )
+			{
+				lAnswer = "<span class='wrong'>" + this.mSumOrDifference + "</span>";
+			}
+			else
+			{
+				lAnswer = this.mSumOrDifference;
+			}
+		}
+		showEquation( this.mFirstNumber + " " + this.mOperator + " " + this.mSecondNumber + " = " + lAnswer );
 	}
 }
 
@@ -75,19 +108,19 @@ function showEquation( pText )
 
 async function clickedAnswer( pNumber )
 {
-	// show the answer
-	sCurrentEquation.show( true );
-	
 	if( pNumber == sCurrentEquation.mSumOrDifference )
 	{
 		// correct answer was given
+		++sCorrectCount;
+		sCurrentEquation.show( true );
 		playSound( "right" );
-		await sleep( 1000 );
+		await sleep( 500 );
 	}
 	else // wrong answer
 	{
+		sCurrentEquation.show( true, true );
 		playSound( "wrong" );
 		await sleep( 2000 );
 	}
-	alert("foo");
+	askNextQuestion();
 }

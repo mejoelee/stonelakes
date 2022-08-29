@@ -2,6 +2,7 @@
 	<head>
 		<title>Sight Word Flashcards</title>
 		<script src="common.js"></script>
+		<script src="audio.js"></script>
 		<script>
 			const sWords =
 			[
@@ -278,7 +279,7 @@
 			
 			function insertBlankOption( pSelect )
 			{
-				let lBlank = document.createElement( "option" );
+				const lBlank = document.createElement( "option" );
 				lBlank.value = -1;
 				lBlank.text = "";
 				pSelect.add( lBlank );
@@ -286,12 +287,12 @@
 			
 			function populateGroupSelect()
 			{
-				let lGroupSelect = get( "groupSelect" );
+				const lGroupSelect = get( "groupSelect" );
 				insertBlankOption( lGroupSelect );
 				
 				for( let i = 0; i < sWords.length; i++ )
 				{
-					let lOption = document.createElement( "option" );
+					const lOption = document.createElement( "option" );
 					lOption.value = i;
 					lOption.text = sWords[ i ][ 0 ];
 					lGroupSelect.add( lOption );
@@ -303,18 +304,19 @@
 				// in case a new group was selected in the middle of a round, hide the cards/buttons
 				hide( "flashcard" );
 				hide( "thumbs" );
+				hide( "message" );
 				
-				let lGroupSelect = get( "groupSelect" );
+				const lGroupSelect = get( "groupSelect" );
 			
 				// remove all list options
-				let lListSelect = get( "listSelect" );
+				const lListSelect = get( "listSelect" );
 				for( ignored in lListSelect.options )
 				{
 					lListSelect.options.remove( 0 );
 				}
 				
 				// only populate the list if an actual group (not blank line) was selected
-				let lGroupIndex = lGroupSelect.value;
+				const lGroupIndex = lGroupSelect.value;
 				if( lGroupIndex > -1 )
 				{
 					insertBlankOption( lListSelect );
@@ -337,8 +339,8 @@
 			
 			function populateDeck()
 			{
-				let lGroupSelectIndex = get( "groupSelect" ).value;
-				let lListSelectIndex = get( "listSelect" ).value;
+				const lGroupSelectIndex = get( "groupSelect" ).value;
+				const lListSelectIndex = get( "listSelect" ).value;
 				
 				// only proceed if an actual list was selected (not blank line)
 				if( lListSelectIndex > -1 ) 
@@ -374,13 +376,28 @@
 						this.mWordsToAsk[ i ] = this.mWords[ i ];
 					}
 					
-					setCard( "<div class='text'><b>Instructions:</b> Click thumbs up if you know the word. Click thumbs down if you don't know the word. Words you don't know will get shuffled back into the deck.</div><button onClick='sDeck.showNextCard();show(\"thumbs\",\"flex\")'>Let's begin!</button>" );
+					setCard( "<div class='text'><b>Instructions:</b> Read the word out loud. If you know the word but it wasn't recognized, click thumbs up. Click thumbs down if you don't know the word. Words you don't know will get shuffled back into the deck.</div><button onClick='sDeck.start()'>Let's begin!</button>" );
 					show( "flashcard" );
 					hide( "thumbs" );
+					hide( "message" );
 				}
-			
+
+				start()
+				{
+					this.showNextCard();
+					get( "message" ).innerHTML = "";
+					show( "thumbs", "flex" );
+					show( "message" );
+				}
+				
 				showNextCard()
 				{
+					// fire up the speech recognition thread
+					if( sListener == null )
+					{
+						listen();
+					}
+					
 					let lWord = null;
 					
 					if( this.mWordsToAsk.length == 0 )
@@ -439,6 +456,9 @@
 						
 						// just call the callback that we use for asynchronous speech
 						finishWord();
+
+						get( "message" ).innerHTML = ( sDeck.mWords.length - sDeck.mWordsToAsk.length ) + " / " + sDeck.mWords.length + " correct";
+
 					}
 				}
 				
@@ -454,7 +474,7 @@
 				
 				readWord()
 				{
-					let lUtterance = new SpeechSynthesisUtterance( this.mLastWordAsked );
+					const lUtterance = new SpeechSynthesisUtterance( this.mLastWordAsked );
 					lUtterance.onend = finishWord;
 					speechSynthesis.speak( lUtterance );
 				}
@@ -462,8 +482,9 @@
 				endRound()
 				{
 					hide( "thumbs" );
+					hide( "message" );
 					
-					let lSeconds = Math.round(( Date.now() - this.mStartMillis ) / 1000 );
+					const lSeconds = Math.round(( Date.now() - this.mStartMillis ) / 1000 );
 					setCard( "<div class='text'>You took " + lSeconds + " seconds to read " + this.mWords.length + " words!</div><button onClick='populateDeck()'>Try Again!</button>" );
 				}
 				
@@ -472,13 +493,55 @@
 			// callback after the word is read
 			function finishWord()
 			{
-				sDeck.showNextCard();
 				sDeck.mIsBusy = false;
+				sDeck.showNextCard();
 			}
 			
 			function setCard( pText )
 			{
 				get( "flashcard" ).innerHTML = pText;
+			}
+
+			var sListener = null;
+			var sHeardWordCount;
+			loadSound( "right", "right.mp3" );
+
+			function listen()
+			{
+				sListener = new SpeechRecognition();
+				sHeardWordCount = 0;
+				sListener.continuous = true;
+				sListener.lang = "en-US";
+				sListener.interimResults = false;
+				sListener.maxAlternatives = 1;
+				sListener.onresult = (event) =>
+				{
+					var lWord = event.results[ sHeardWordCount ][ 0 ].transcript;
+					const lScore = event.results[ sHeardWordCount++ ][ 0 ].confidence;
+					console.log( lWord + "/" + sDeck.mLastWordAsked + ": " + lScore );
+					if( lWord != null )
+					{
+						lWord = lWord.trim();
+						if( lWord == sDeck.mLastWordAsked )
+						{
+							if(	lScore > 0.75 )
+							{	
+								playSound( "right" );
+								sDeck.pass();
+							}
+							else
+							{
+								get( "message" ).innerHTML = "thought i heard \"" + lWord + "\"";
+							}
+						}
+						else
+						{
+							get( "message" ).innerHTML = "heard \"" + lWord + "\"";
+						}
+					}
+				}
+				sListener.start();
+				
 			}
 		</script>
 		<style>
@@ -504,7 +567,7 @@
 			}
 		</style>
 	</head>
-	<body onLoad="populateGroupSelect()">
+	<body onLoad="populateGroupSelect();">
 
 		<div style="text-align:center;font-size:25px;width:500px">
 			<h2>Sight Word Flashcards</h2>
@@ -530,6 +593,8 @@
 				<div class="thirds"><button onClick="populateDeck()">Start Over</button></div>
 				<div class="thirds"><img src="thumbsDown.jpg" onClick="sDeck.fail()"></div>
 			</div>
+			
+			<div id="message" style="font-size:20px;text-align:center"></div>
 		</div>
 		
 	</body>
