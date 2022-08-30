@@ -16,8 +16,9 @@ function loadSound( pId, pUrl )
 	sSounds[ pId ] = new Audio( pUrl );
 }
 
-function playSound( pId )
+function playSound( pId, pCallback )
 {
+	sSounds[ pId ].onended = pCallback;
 	sSounds[ pId ].play();
 }
 

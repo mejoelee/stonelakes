@@ -353,6 +353,13 @@
 				}
 			}
 			
+			// callback after the word is read
+			function finishWord()
+			{
+				sDeck.mIsBusy = false;
+				sDeck.showNextCard();
+			}
+			
 			class Deck
 			{
 				constructor( pWords )
@@ -376,7 +383,7 @@
 						this.mWordsToAsk[ i ] = this.mWords[ i ];
 					}
 					
-					setCard( "<div class='text'><b>Instructions:</b> Read the word out loud. If you know the word but it wasn't recognized, click thumbs up. Click thumbs down if you don't know the word. Words you don't know will get shuffled back into the deck.</div><button onClick='sDeck.start()'>Let's begin!</button>" );
+					setCard( "<div class='text'><b>Instructions:</b> Click thumbs up if you know the word. Click thumbs down if you don't. Words you don't know will get shuffled back into the deck.</div><button onClick='sDeck.start()'>Let's begin!</button>" );
 					show( "flashcard" );
 					hide( "thumbs" );
 					hide( "message" );
@@ -448,17 +455,16 @@
 				pass()
 				{
 					if( !this.mIsBusy )
-					{
+					{	
+						
 						this.mIsBusy = true;
 						
 						// remove the word from list of words to ask
 						this.mWordsToAsk.splice( this.mIndex, 1 );
 						
-						// just call the callback that we use for asynchronous speech
-						finishWord();
-
 						get( "message" ).innerHTML = ( sDeck.mWords.length - sDeck.mWordsToAsk.length ) + " / " + sDeck.mWords.length + " correct";
 
+						playSound( "right", finishWord );
 					}
 				}
 				
@@ -490,13 +496,6 @@
 				
 			};
 			
-			// callback after the word is read
-			function finishWord()
-			{
-				sDeck.mIsBusy = false;
-				sDeck.showNextCard();
-			}
-			
 			function setCard( pText )
 			{
 				get( "flashcard" ).innerHTML = pText;
@@ -508,6 +507,9 @@
 
 			function listen()
 			{
+				// skip speech recognition for now, it's just too buggy on different browsers
+				return;
+				
 				sListener = new SpeechRecognition();
 				sHeardWordCount = 0;
 				sListener.continuous = true;
@@ -525,8 +527,7 @@
 						if( lWord == sDeck.mLastWordAsked )
 						{
 							if(	lScore > 0.75 )
-							{	
-								playSound( "right" );
+							{
 								sDeck.pass();
 							}
 							else
