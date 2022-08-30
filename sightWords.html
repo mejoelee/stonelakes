@@ -399,11 +399,6 @@
 				
 				showNextCard()
 				{
-					// fire up the speech recognition thread
-					if( sListener == null )
-					{
-						listen();
-					}
 					
 					let lWord = null;
 					
@@ -501,49 +496,9 @@
 				get( "flashcard" ).innerHTML = pText;
 			}
 
-			var sListener = null;
 			var sHeardWordCount;
 			loadSound( "right", "right.mp3" );
 
-			function listen()
-			{
-				// skip speech recognition for now, it's just too buggy on different browsers
-				return;
-				/*
-				sListener = new SpeechRecognition();
-				sHeardWordCount = 0;
-				sListener.continuous = true;
-				sListener.lang = "en-US";
-				sListener.interimResults = false;
-				sListener.maxAlternatives = 1;
-				sListener.onresult = (event) =>
-				{
-					var lWord = event.results[ sHeardWordCount ][ 0 ].transcript;
-					const lScore = event.results[ sHeardWordCount++ ][ 0 ].confidence;
-					console.log( lWord + "/" + sDeck.mLastWordAsked + ": " + lScore );
-					if( lWord != null )
-					{
-						lWord = lWord.trim();
-						if( lWord == sDeck.mLastWordAsked )
-						{
-							if(	lScore > 0.75 )
-							{
-								sDeck.pass();
-							}
-							else
-							{
-								get( "message" ).innerHTML = "thought i heard \"" + lWord + "\"";
-							}
-						}
-						else
-						{
-							get( "message" ).innerHTML = "heard \"" + lWord + "\"";
-						}
-					}
-				}
-				sListener.start();
-				*/
-			}
 		</script>
 		<style>
 			h2
