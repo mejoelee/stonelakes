@@ -6,11 +6,20 @@
 		<script src="addSubtract.js"></script>
 		<link rel="stylesheet" href="addSubtract.css">
 	</head>
-	<body onLoad="startQuiz( 1, 10, 20 );">
+	<body>
+		<a href="index.html" style="text-decoration:none">&lt;&lt; back</a>
 		<div style="text-align:center;font-size:25px;width:500px">	
-			<h2>Add & Subtract to 10</h2>
+			<h2>Minute Math</h2>
+			
+			Select a group of numbers: <select onChange="selectNumberSet(this.value);">
+				<option value="8888+"></option>
+				<option value="9999+">All</option>
+				<script>writeSelectNumberSet();</script>
+			</select>
 			<div id="equation" style="margin:50px;text-align:center"></div>
-			<script>writeTable( 1, 20 );</script>
+			<div id="answers" style="display:none">
+				<script>writeTable( 0, 29 );</script>
+			</div>
 		</div>
 	</body>
 </html>
