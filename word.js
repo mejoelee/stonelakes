@@ -14,14 +14,17 @@ class Word
 		// grab the first recorded pronunciation
 		let lSoundUrl = null;
 		this.mHasPronunciation = false;
-		for( let i in lDefinition[ 0 ].phonetics )
+		if( lDefinition[ 0 ] != null )
 		{
-			lSoundUrl = lDefinition[ 0 ].phonetics[ i ].audio;
-			if( lSoundUrl != null && lSoundUrl.length > 0 )
+			for( let i in lDefinition[ 0 ].phonetics )
 			{
-				loadSound( "word:" + pWord, lSoundUrl );
-				this.mHasPronunciation = true;
-				break;
+				lSoundUrl = lDefinition[ 0 ].phonetics[ i ].audio;
+				if( lSoundUrl != null && lSoundUrl.length > 0 )
+				{
+					loadSound( "word:" + pWord, lSoundUrl );
+					this.mHasPronunciation = true;
+					break;
+				}
 			}
 		}
 	}
