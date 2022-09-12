@@ -3,6 +3,8 @@
 		<title>Sight Word Flashcards</title>
 		<script src="common.js"></script>
 		<script src="audio.js"></script>
+		<script src="http.js"></script>
+		<script src="word.js"></script>
 		<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 		<script>
 			const sWords =
@@ -470,15 +472,8 @@
 					{
 						this.mIsBusy = true;
 						
-						this.readWord();
+						new Word( this.mLastWordAsked ).pronounce( finishWord );
 					}
-				}
-				
-				readWord()
-				{
-					const lUtterance = new SpeechSynthesisUtterance( this.mLastWordAsked );
-					lUtterance.onend = finishWord;
-					speechSynthesis.speak( lUtterance );
 				}
 				
 				endRound()

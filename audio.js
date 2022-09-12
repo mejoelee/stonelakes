@@ -25,3 +25,11 @@ function playSound( pId, pCallback )
 const SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
 const SpeechGrammarList = window.SpeechGrammarList || webkitSpeechGrammarList;
 const SpeechRecognitionEvent = window.SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
+
+				
+function synthesizeWord( pWord, pCallback )
+{
+	const lUtterance = new SpeechSynthesisUtterance( pWord );
+	lUtterance.onend = pCallback;
+	speechSynthesis.speak( lUtterance );
+}
