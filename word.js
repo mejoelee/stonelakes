@@ -29,6 +29,11 @@ class Word
 		}
 	}
 	
+	getWord()
+	{
+		return this.mWord;
+	}
+	
 	pronounce( pCallback )
 	{
 		if( this.mHasPronunciation )
