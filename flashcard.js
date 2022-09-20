@@ -133,6 +133,12 @@ class Deck
 			get( "message" ).innerHTML = ( sDeck.mWords.length - sDeck.mWordsToAsk.length ) + " / " + sDeck.mWords.length + " correct";
 
 			playSound( "right", finishWord );
+			
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 	
@@ -142,7 +148,11 @@ class Deck
 		{
 			this.mIsBusy = true;
 			
-			this.mCurrentWord.pronounce( finishWord );
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 	

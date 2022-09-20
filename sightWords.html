@@ -226,6 +226,23 @@
 				{
 					return "<div class='text'>You took " + pSeconds + " seconds to read " + this.mWords.length + " words!</div><button onClick='populateDeck()'>Try Again!</button>";
 				}
+
+				
+				pass()
+				{
+					if( super.pass() )
+					{	
+						playSound( "right", finishWord );
+					}
+				}
+				
+				fail()
+				{
+					if( super.fail() )
+					{
+						this.mCurrentWord.pronounce( finishWord );
+					}
+				}
 			}
 
 			function populateDeck()

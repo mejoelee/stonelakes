@@ -86,6 +86,23 @@
 					pronounceWord();
 					get( "guess" ).innerHTML = "";
 				}
+
+				
+				pass()
+				{
+					if( super.pass() )
+					{	
+						playSound( "right", finishWord );
+					}
+				}
+				
+				fail()
+				{
+					if( super.fail() )
+					{
+						playSound( "wrong", async function(){await sleep(2000);finishWord()} );
+					}
+				}
 			}
 			function populateDeck()
 			{
@@ -117,11 +134,13 @@
 				show( "answer" );
 				if( lIsCorrect )
 				{
-					playSound( "right", function(){ get( "guess" ).value = ""; sDeck.showNextCard(); });
+					get( "guess" ).value = "";
+					sDeck.pass();
 				}
 				else
 				{
-					playSound( "wrong", function(){ get( "guess" ).value = ""; sleep( 2000 ); sDeck.showNextCard(); });
+					get( "guess" ).value = "";
+					sDeck.fail();
 				}
 			}
 		</script>
