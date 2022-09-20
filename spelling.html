@@ -100,7 +100,7 @@
 				{
 					if( super.fail() )
 					{
-						playSound( "wrong", async function(){await sleep(2000);finishWord()} );
+						playSound( "wrong" );
 					}
 				}
 			}
@@ -139,9 +139,16 @@
 				}
 				else
 				{
-					get( "guess" ).value = "";
+					show( "ok" );
 					sDeck.fail();
 				}
+			}
+			
+			function ok()
+			{
+				hide( "ok" );
+				get( "guess" ).value = "";
+				finishWord();
 			}
 		</script>
 		<style>
@@ -173,10 +180,6 @@
 				width:				300px;
 				margin-left:		auto;
 				margin-right:		auto;
-			}
-			body
-			{
-				text-align:			center;
 			}
 			table
 			{
@@ -219,6 +222,7 @@
 				<div style="margin-left:80px;display:flex;flex-direction:row;position:relative">
 					<img src="pronounce.jpg" onClick="pronounceWord()" class="pronounce">
 					<span id="answer" style="font-family:sans-serif;font-weight:bold;font-size:30px;height:60px;position:absolute;left:100px;bottom:0px"></span>
+					<button id="ok" onclick="ok();" style="display:none;position:absolute;right:55px;bottom:0">OK</button>
 				</div>
 				<input id="guess" style="margin-bottom:15px">
 				<script>writeTable();</script>

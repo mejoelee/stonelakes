@@ -164,6 +164,7 @@ class Deck
 		
 		const lSeconds = Math.round(( Date.now() - this.mStartMillis ) / 1000 );
 		get( "flashcard" ).innerHTML = this.getResults( lSeconds );
+		show( "flashcard" );
 	}
 
 	getResults( pSeconds )
