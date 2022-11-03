@@ -1,0 +1,238 @@
+<html>
+	<head>
+		<title>Spelling Quiz</title>
+		<script src="common.js"></script>
+		<script src="http.js"></script>
+		<script src="audio.js"></script>
+		<script src="word.js"></script>
+		<script src="flashcard.js"></script>
+		<script>
+			const sWords =
+			{
+				"Spelling Bee":
+				{
+					"One Bee 50 1st Grade":
+					[
+						"adds", "put", "tell", "poke", "long", "make", "can", "sink", "rice", "pants",
+						"cups", "trap", "ten", "tiny", "moo", "like", "ears", "sit", "look", "none",
+						"drag", "grass", "had", "not", "tote", "doll", "nets", "page", "map", "food",
+						"nose", "share", "hot", "cute", "cry", "hey", "need", "off", "came", "trees",
+						"plan", "hint", "bill", "pod", "top", "toys", "five", "meal", "help", "feel"
+					]
+				}
+			};
+			const sLetters =
+			[
+				[ "a", "b", "c", "d", "e", "f", "g", "h", "i" ],
+				[ "j", "k", "l", "m", "n", "o", "p", "q", "r" ],
+				[ "s", "t", "u", "v", "w", "x", "y", "z", "&#8592" ]
+			];
+			function writeTable()
+			{
+				document.write( "<table>" );
+				for( let i in sLetters )
+				{
+					document.write( "<tr>" );
+					for( let j in sLetters[ i ])
+					{
+						document.write( "<td onClick='typeLetter(\"" );
+						document.write( sLetters[ i ][ j ])
+						document.write( "\")'>" );
+						
+						document.write( sLetters[ i ][ j ]);
+						document.write( "</td>" );
+					}
+					document.write( "</tr>" );
+				}
+				document.write( "</table>" );
+			}
+			function typeLetter( pLetter )
+			{
+				var lGuess = get( "guess" ).value;
+				if( pLetter.charCodeAt( 0 ) == 8592 ) // 8592 = left arrow
+				{
+					lGuess = lGuess.substring( 0, lGuess.length - 1 );
+				}
+				else
+				{
+					lGuess = lGuess + pLetter;
+				}
+				get( "guess" ).value = lGuess;
+			}
+
+			class SpellingDeck extends Deck
+			{
+				constructor( pWords )
+				{
+					super( pWords, "<div class='text'><b>Instructions:</b> Click the button to hear the word. Use the keyboard or letters on-screen to spell the word, then click the button to check the spelling.</div><button onClick='sDeck.start()'>Let's Begin!</button>" );
+				}
+				
+				getResults( pSeconds )
+				{
+					return "<div class='text'>You took " + pSeconds + " seconds to spell " + this.mWords.length + " words!</div><button onClick='populateDeck()'>Try Again!</button>";
+				}
+				
+				setCard( pText )
+				{
+					get( "answer" ).innerHTML = pText;
+					hide( "answer" );
+				}
+				
+				start()
+				{
+					super.start();
+					hide( "flashcard" );
+				}
+				
+				initCard()
+				{
+					pronounceWord();
+					get( "guess" ).innerHTML = "";
+				}
+
+				
+				pass()
+				{
+					if( super.pass() )
+					{	
+						playSound( "right", finishWord );
+					}
+				}
+				
+				fail()
+				{
+					if( super.fail() )
+					{
+						playSound( "wrong" );
+					}
+				}
+			}
+			function populateDeck()
+			{
+				const lGroupSelectId = get( "groupSelect" ).value;
+				const lListSelectId = get( "listSelect" ).value;
+				
+				// only proceed if an actual list was selected (not blank line)
+				if( lListSelectId != -1 ) 
+				{
+					sDeck = new SpellingDeck( sWords[ lGroupSelectId ][ lListSelectId ]);
+				}
+				else // blank line selected
+				{
+					hide( "flashcard" );
+					hide( "buttons" );
+					hide( "message" );
+				}
+			} 
+			 
+			function pronounceWord()
+			{
+				sDeck.getCurrentWord().pronounce();
+			}
+			
+			function checkSpelling()
+			{
+				const lIsCorrect = get( "guess" ).value == sDeck.getCurrentWord().getWord();
+				get( "answer" ).style.color = lIsCorrect ? "66ff66" : "ff6666";
+				show( "answer" );
+				if( lIsCorrect )
+				{
+					get( "guess" ).value = "";
+					sDeck.pass();
+				}
+				else
+				{
+					show( "ok" );
+					sDeck.fail();
+				}
+			}
+			
+			function ok()
+			{
+				hide( "ok" );
+				get( "guess" ).value = "";
+				finishWord();
+			}
+		</script>
+		<style>
+			td
+			{
+				font-family:		sans-serif;
+				font-weight:		bold;
+				font-size:			30px;
+				text-align:			center;
+				background-color:	#eeeeff;
+				width:				30px;
+				border-top:			1px solid #ccccff;
+				border-left:		1px solid #ccccff;
+				border-right:		1px solid #aaaacc;
+				border-bottom:		1px solid #aaaacc;
+			}
+			
+			td:hover
+			{
+				background-color:	#aaaaff;
+				cursor:				default;
+				color:				#0000ff;
+			}
+			input
+			{
+				font-family:		sans-serif;
+				font-weight:		bold;
+				font-size:			30px;
+				width:				300px;
+				margin-left:		auto;
+				margin-right:		auto;
+			}
+			table
+			{
+				margin-left:		auto;
+				margin-right:		auto;
+			}
+			button, select
+			{
+				font-family:		serif;
+				font-size:			25px;
+				margin:				15px;
+			}
+			.pronounce
+			{
+				width:				100px;
+				height:				100px;
+			}
+		</style>
+	</head>
+	<body onLoad="populateGroupSelect(sWords);">
+		<a href="index.html" style="text-decoration:none">&lt;&lt; back</a>
+		<div style="text-align:center;font-size:25px;width:500px">
+			<h2>Spelling Quiz</h2>
+			
+			<!-- select group -->	
+			<div>
+				Select a group of words to study:<br>
+				<select id="groupSelect" onChange="populateListSelect()"></select>
+			</div>
+			
+			<!-- select list from group -->		
+			<div id="list" style="display:none;">
+				Select a list from the group:<br>
+				<select id="listSelect" onChange="populateDeck()"></select>
+			</div>
+		
+			<div id="flashcard" style="display:none;"></div>
+		
+			<div id="buttons" style="display:none;flex-direction:column;justify-content:center">
+				<div style="margin-left:80px;display:flex;flex-direction:row;position:relative">
+					<img src="pronounce.jpg" onClick="pronounceWord()" class="pronounce">
+					<span id="answer" style="font-family:sans-serif;font-weight:bold;font-size:30px;height:60px;position:absolute;left:100px;bottom:0px"></span>
+					<button id="ok" onclick="ok();" style="display:none;position:absolute;right:55px;bottom:0">OK</button>
+				</div>
+				<input id="guess" style="margin-bottom:15px">
+				<script>writeTable();</script>
+				<button onClick="checkSpelling()" style="width:200;margin-left:auto;margin-right:auto">Check Spelling</button>
+			</div>
+			
+			<div id="message" style="font-size:20px;text-align:center;"></div>
+		</div>
+	</body>
+</html>
