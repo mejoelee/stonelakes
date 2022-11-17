@@ -60,6 +60,7 @@ class Operation
 	
 	createQuestions( pNumberSet, pStart, pEnd, pArray )
 	{
+		hide( "multiplicationAnswers" );
 		switch( this )
 		{
 			case Operation.ADD: 
@@ -83,13 +84,17 @@ class Operation
 				{
 					pArray.push( new Equation( pNumberSet, iSecondNumber, Operation.MULTIPLY ));
 				}
+				show( "multiplicationAnswers" );
 				break;
 				
 			case Operation.DIVIDE:
 				for( let i = pStart; i <= pEnd; i++ )
 				{
-					let lFirstNumber = ( pNumberSet + i ) * pNumberSet;
-					pArray.push( new Equation( lFirstNumber, pNumberSet, Operation.DIVIDE ));
+					let lFirstNumber = pNumberSet * i;
+					if( lFirstNumber != 0 )
+					{
+						pArray.push( new Equation( lFirstNumber, pNumberSet, Operation.DIVIDE ));
+					}
 				}
 				break;
 		}
