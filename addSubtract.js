@@ -60,7 +60,8 @@ class Operation
 	
 	createQuestions( pNumberSet, pStart, pEnd, pArray )
 	{
-		hide( "multiplicationAnswers" );
+		hide( "answers" );
+		hide( "answers100" );
 		switch( this )
 		{
 			case Operation.ADD: 
@@ -84,7 +85,6 @@ class Operation
 				{
 					pArray.push( new Equation( pNumberSet, iSecondNumber, Operation.MULTIPLY ));
 				}
-				show( "multiplicationAnswers" );
 				break;
 				
 			case Operation.DIVIDE:
@@ -104,12 +104,69 @@ class Operation
 loadSound( "right", "right.mp3" );
 loadSound( "wrong", "wrong.mp3" );
 
+function writeAnswerDiv()
+{
+	document.writeln( "<select id='hundreds' class='answer' onfocus='showLong( this )' onblur='showShort( this, 100 )' onchange='this.blur()'>" );
+	for( let i = 0; i <= 1; i++ )
+	{
+		let lValue = i * 100;
+		document.write( "<option value='");
+		document.write( lValue );
+		document.write( "'>" );
+		document.write( lValue );
+		document.write( "</option>")
+	}
+	document.write( "</select>" );
+	document.write( "<select id='tens' class='answer' onfocus='showLong( this )' onblur='showShort( this, 10 )' onchange='this.blur()'>" );
+	for( let i = 0; i <= 9; i++ )
+	{
+		let lValue = i * 10;
+		document.write( "<option value='");
+		document.write( lValue );
+		document.write( "'>" );
+		document.write( lValue );
+		document.write( "</option>")
+	}
+	document.write( "</select>" );
+	document.write( "<select id='ones' class='answer'>" );
+	for( let i = 0; i <= 9; i++ )
+	{
+		document.write( "<option value='");
+		document.write( i );
+		document.write( "'>" );
+		document.write( i );
+		document.write( "</option>")
+	}
+	document.write( "</select>" );
+	document.write( "<button onClick='submitMultiplicationAnswer()'> ok </button>" );
+}
+async function submitMultiplicationAnswer()
+{
+	let lHundreds = parseInt( get( "hundreds" ).value );
+	let lTens = parseInt( get( "tens" ).value );
+	let lOnes = parseInt( get( "ones" ).value );
+	submitAnswer( lHundreds + lTens + lOnes );
+}
+function showLong( pSelect )
+{
+	[].forEach.call( pSelect.options, function( pOption )
+	{
+		pOption.textContent = pOption.getAttribute( 'value' );
+	});
+}
+function showShort( pSelect, pDenominator )
+{
+	[].forEach.call( pSelect.options, function( pOption )
+	{
+		pOption.textContent = pOption.getAttribute( 'value' ) / pDenominator;
+	});
+}
 function writeTable( pStart, pEnd )
 {
 	document.write( "<table><tr>\r\n" );
 	for( let i = pStart; i <= pEnd; i++ )
 	{
-		document.write( "<td onClick='clickedAnswer(" );
+		document.write( "<td onClick='submitAnswer(" );
 		document.write( i );
 		document.write( ")'>" );
 		document.write( i );
@@ -189,6 +246,7 @@ function startQuiz( pNumberSet, pStart, pEnd, pOperation )
 	if( sNumberSet == 0000 ) // code for clear 
 	{
 		hide( "answers" );
+		hide( "answers100" );
 		get( "equation" ).innerHTML = "";	
 	}
 	else
@@ -204,7 +262,7 @@ function startQuiz( pNumberSet, pStart, pEnd, pOperation )
 		{
 			pOperation.createQuestions( pNumberSet, pStart, pEnd, sEquations );
 		}
-		show( "answers" );
+		show( pOperation == Operation.MULTIPLY ? "answers100" : "answers" );
 		askNextQuestion();
 	}
 }
@@ -220,6 +278,7 @@ function askNextQuestion()
 	else // done, display results
 	{
 		hide( "answers" );
+		hide( "answers100" );
 		const lTime = Math.round(( Date.now() - sStartTime ) / 1000 );
 		if( sIncorrectCount == 0 )
 		{
@@ -266,7 +325,7 @@ function showEquation( pText )
 }
 
 var sWasClicked = false;
-async function clickedAnswer( pNumber )
+async function submitAnswer( pNumber )
 {
 	if( !sWasClicked )
 	{

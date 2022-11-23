@@ -22,9 +22,11 @@ td:hover
 
 .answer
 {
-	background-color:	#ffddbb;
-	cursor:				default;
-	color:				#cc3333;
+	font-size:			30px;
+	width:				65px;
+	appearance:			none;
+	text-align:			center;
+	background-color:	#eeeeff;
 }
 table
 {
