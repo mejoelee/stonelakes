@@ -146,9 +146,9 @@ async function submitMultiplicationAnswer()
 	let lTens = parseInt( get( "tens" ).value );
 	let lOnes = parseInt( get( "ones" ).value );
 	submitAnswer( lHundreds + lTens + lOnes );
-	get( "hundreds" ).value - 0;
-	get( "tens" ).value - 0;
-	get( "ones" ).value - 0;
+	get( "hundreds" ).value = 0;
+	get( "tens" ).value = 0;
+	get( "ones" ).value = 0;
 }
 function showLong( pSelect )
 {
